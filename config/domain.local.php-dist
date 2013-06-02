@@ -1,0 +1,29 @@
+<?php
+return array(
+    'service_manager' => array(
+        'factories' => array(
+            '\Mongo' => function ($sm) {
+                $mongoConfig = $sm->get('mongo_config');
+                $mongo = new \Mongo($mongoConfig['server']);
+                return $mongo;
+            },
+            '\MongoDb' => function ($sm) {
+                $mongoConfig = $sm->get('mongo_config');
+                $mongoDb = new \MongoDB($sm->get('mongo'), $mongoConfig['database']);
+                if ($mongoConfig['authenticate']) {
+                    $mongoDb->authenticate($mongoConfig['username'], $mongoConfig['password']);
+                }
+                return $mongoDb;
+            },
+            'mongo_config' => function () {
+                return array(
+                    'server' => 'mongodb://localhost:27017',
+                    'authenticate' => false,
+                    'username' => false,
+                    'password' => false,
+                    'database' => 'databasename'
+                );
+            }
+        )
+    ),
+);
