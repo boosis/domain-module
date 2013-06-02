@@ -1,11 +1,11 @@
 {
-    "name": "boosis/auth-module",
-    "description": "Auth module for ZF2",
+    "name": "boosis/domain-module",
+    "description": "Domain module for ZF2",
     "type": "library",
     "keywords": [
         "zf2"
     ],
-    "homepage": "https://github.com/boosis/auth-module",
+    "homepage": "https://github.com/boosis/domain-module",
     "authors": [
         {
             "name": "Bill Yildirim",
