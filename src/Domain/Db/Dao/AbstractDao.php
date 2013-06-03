@@ -60,6 +60,7 @@ abstract class AbstractDao
     public function setTableName($tableName)
     {
         $this->tableName = $tableName;
+        return $this;
     }
 
     public function getTableName()
