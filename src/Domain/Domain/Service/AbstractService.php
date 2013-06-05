@@ -4,18 +4,24 @@
  * User: bill
  * Date: 01/04/2013
  * Time: 12:16
- * 
+ *
  */
-namespace Domain\Domain\Service; 
+namespace Domain\Domain\Service;
 use Domain\Db\Dao\AbstractDao;
 use Domain\Domain\Model\AbstractModel;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
-class AbstractService
+class AbstractService implements ServiceLocatorAwareInterface, EventManagerAwareInterface
 {
     /**
      * @var array AbstractDao[]
      */
     protected $daos = array();
+    protected $serviceLocator;
+    protected $events;
 
     /**
      * @param $key
@@ -64,5 +70,48 @@ class AbstractService
         }
         $result = $this->getDao($daoKey)->fetchBy(array($this->getDao($daoKey)->getIdField() => $id), $fields);
         return $result;
+    }
+
+    /**
+     * Set service locator
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    /**
+     * Get service locator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    /**
+     * Inject an EventManager instance
+     *
+     * @param  EventManagerInterface $eventManager
+     * @return void
+     */
+    public function setEventManager(EventManagerInterface $eventManager)
+    {
+        $this->events = $eventManager;
+    }
+
+    /**
+     * Retrieve the event manager
+     *
+     * Lazy-loads an EventManager instance if none registered.
+     *
+     * @return EventManagerInterface
+     */
+    public function getEventManager()
+    {
+        return $this->events;
     }
 }
